@@ -7,7 +7,10 @@
 
 #define DEBUG 1
 #ifdef DEBUG
-#include <Console.h>
+  #include <Console.h>
+  #define SLOG(...) slog(__VA_ARGS__)
+#else
+  #define SLOG(...)
 #endif
 
 /**
@@ -61,7 +64,7 @@ void light_on() {
    * Turn Hue lights on
    */
   run_cmd(API_ON);
-  slog(API_ON + "\n" + "Lights ON");
+  SLOG(API_ON + "\n" + "Lights ON");
 }
 
 void light_off(){
@@ -69,7 +72,7 @@ void light_off(){
    * Turn Hue lights off
    */
   run_cmd(API_OFF);
-  slog(API_OFF + "\n" + "Lights OFF");
+  SLOG(API_OFF + "\n" + "Lights OFF");
 }
 
 void setup() {
