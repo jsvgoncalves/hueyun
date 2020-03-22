@@ -3,6 +3,7 @@
  */
 
 #include <Bridge.h>
+#include <Console.h>
 #include <Process.h>
 
 /**
@@ -13,7 +14,7 @@ const int readPin = 7;
 /**
  * SW related
  */
-const int TIME_ON = 60000;
+const unsigned long TIME_ON = 60000;
 const int DEBUG_ON = 1;
 const int DEBUG_OFF = 0;
 const int DEBUG = DEBUG_OFF;
@@ -36,14 +37,15 @@ const String API_OFF = cmd + p_off + api + endpoint;
  * vars
  */
 bool f = false; // light state flag
+unsigned long tl = 0;
 
 void slog(String msg) {
   /**
    * Logger
    */
   if (DEBUG == DEBUG_OFF) return;
-  SerialUSB.print(msg + "\n");
-  SerialUSB.flush();
+  Console.print(msg + "\n");
+  Console.flush();
 }
 
 void run_cmd(String c) {
@@ -73,18 +75,18 @@ void setup() {
   pinMode(13, OUTPUT);
   digitalWrite(13, HIGH);
   Bridge.begin();
-//  SerialUSB.begin(9600);
-//  while (!SerialUSB);
+  Console.begin();
+  while (!Console);
   digitalWrite(13, LOW);
 }
 
 void loop() {
   int m = digitalRead(readPin);
-    if(m == 1 && f == false) {
+  if(m == 1 && f == false) {
     light_on();
     f = true;
-    delay(TIME_ON);
-  } else if(f == true && m != 1) {
+    tl = millis();
+  } else if (f == true && millis() - tl >= TIME_ON) {
     light_off();
     f = false;
   }
