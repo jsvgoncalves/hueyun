@@ -3,10 +3,12 @@
  */
 
 #include <Bridge.h>
-#include <Console.h>
 #include <Process.h>
 
 #define DEBUG 1
+#ifdef DEBUG
+#include <Console.h>
+#endif
 
 /**
  * HW related
