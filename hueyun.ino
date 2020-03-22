@@ -6,6 +6,8 @@
 #include <Console.h>
 #include <Process.h>
 
+#define DEBUG 1
+
 /**
  * HW related
  */
@@ -15,9 +17,6 @@ const int readPin = 7;
  * SW related
  */
 const unsigned long TIME_ON = 60000;
-const int DEBUG_ON = 1;
-const int DEBUG_OFF = 0;
-const int DEBUG = DEBUG_OFF;
 
 /**
  * API related 
@@ -43,9 +42,10 @@ void slog(String msg) {
   /**
    * Logger
    */
-  if (DEBUG == DEBUG_OFF) return;
+  #ifdef DEBUG
   Console.print(msg + "\n");
   Console.flush();
+  #endif
 }
 
 void run_cmd(String c) {
@@ -75,8 +75,10 @@ void setup() {
   pinMode(13, OUTPUT);
   digitalWrite(13, HIGH);
   Bridge.begin();
+  #ifdef DEBUG
   Console.begin();
   while (!Console);
+  #endif
   digitalWrite(13, LOW);
 }
 
